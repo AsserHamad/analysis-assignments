@@ -24,7 +24,8 @@ public class Graph {
 	
 	// the following method adds a vertex to the graph [2 pts]
 	 public void insertVertex(String strUniqueID, String strData, int nX, int nY) {
-		 vertices.add(new Vertex(strUniqueID, strData, nX, nY));
+		 if(getVertexByUniqueID(strUniqueID) == null)
+		 	vertices.add(new Vertex(strUniqueID, strData, nX, nY));
 	 };
 	
 	// inserts an edge between 2 specified vertices [2 pts]
@@ -49,8 +50,8 @@ public class Graph {
 			}
 		}
 		for(int i=0; i < paths.size(); i++) {
-			if(paths.get(i)._vertex.getUniqueID().equals(uniqueID))
-				paths.remove(i);
+			if(paths.get(i).getVertex().getUniqueID().equals(uniqueID))
+				removeEdge(paths.get(i).getEdge());
 		}
 	}
 	
@@ -102,5 +103,12 @@ public class Graph {
 				return path.getEdge();
 		}
 		return null;
+	}
+	
+	public void removeEdge(Edge edge) {
+		for(int i=0; i < paths.size(); i++) {
+			if(paths.get(i).getEdge().getUniqueID().equals(edge.getUniqueID()))
+				paths.remove(i);
+		}
 	}
 }
