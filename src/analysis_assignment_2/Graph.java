@@ -1,14 +1,14 @@
 package analysis_assignment_2;
 
-import java.util.ArrayList;
+import java.util.Vector;
 
 public class Graph {
-	public ArrayList<Vertex> vertices;
-	public ArrayList<PathSegment> paths;
+	public Vector<Vertex> vertices;
+	public Vector<PathSegment> paths;
 	
 	public Graph() {
-		vertices = new ArrayList<Vertex>();
-		paths = new ArrayList<PathSegment>();
+		vertices = new Vector<Vertex>();
+		paths = new Vector<PathSegment>();
 	}
 	
 	//  returns the name you have given to this graph library [1 pt]
@@ -43,29 +43,46 @@ public class Graph {
 	// removes vertex and its incident edges [1 pt]
 	public void removeVertex(String strVertexUniqueID) throws GraphException {
 		StringBuffer uniqueID = new StringBuffer(strVertexUniqueID);
+		
+		// Remove the vertex from the list of vertices
 		for(Vertex vertex : vertices) {
 			if(vertex.getUniqueID().equals(uniqueID)) {
 				vertices.remove(vertex);
 				break;
 			}
 		}
+		
+		// Get all the paths containing this vertex and remove their respective edges
 		for(int i=0; i < paths.size(); i++) {
 			if(paths.get(i).getVertex().getUniqueID().equals(uniqueID))
-				removeEdge(paths.get(i).getEdge());
+				removeEdge(paths.get(i).getEdge().getUniqueID().toString());
 		}
 	}
 	
 	// removes an edge from the graph [1 pt]
-	//	public void removeEdge(String strEdgeUniqueID) throws GraphException
+	public void removeEdge(String strEdgeUniqueID) throws GraphException {
+		for(int i=0; i < paths.size(); i++) {
+			if(paths.get(i).getEdge().getUniqueID().equals(new StringBuffer(strEdgeUniqueID)))
+				paths.remove(i);
+		}
+	}
 
 	// returns a vector of edges incident to vertex whose
-	 // id is strVertexUniqueID [1 pt]
-	//	public Vector<Edge> incidentEdges(String strVertexUniqueID) throws GraphException
+	// id is strVertexUniqueID [1 pt]
+	public Vector<Edge> incidentEdges(String strVertexUniqueID) throws GraphException{
+		Vector<Edge> edges = new Vector<Edge>();
+		for(PathSegment path : paths)
+			if(path.getVertex().getUniqueID().equals(new StringBuffer(strVertexUniqueID)))
+				edges.add(path.getEdge());
+		return edges;
+	}
 
 	 
 
 	 // returns all vertices in the graph [1 pt]
-	//	public Vector<Vertex> vertices()throws GraphException
+	public Vector<Vertex> vertices()throws GraphException {
+		return vertices;
+	}
 
 	// returns all edges in the graph [1 pt]
 	//	public Vector<Edge> edges() throws GraphException
@@ -104,11 +121,5 @@ public class Graph {
 		}
 		return null;
 	}
-	
-	public void removeEdge(Edge edge) {
-		for(int i=0; i < paths.size(); i++) {
-			if(paths.get(i).getEdge().getUniqueID().equals(edge.getUniqueID()))
-				paths.remove(i);
-		}
-	}
+
 }
