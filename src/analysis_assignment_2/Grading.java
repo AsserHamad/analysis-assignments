@@ -1,5 +1,7 @@
 package analysis_assignment_2;
 
+import java.util.Vector;
+
 public class Grading {
 
     public int runTestCase1() throws GraphException {
@@ -21,7 +23,10 @@ public class Grading {
         g.insertEdge("3", "5", "34", "34", 34);
 
 
-        System.out.println(g.pathDFS("1", "5"));
+
+        Vector<PathSegment> pathSegments = g.pathDFS("1", "5");
+        for (PathSegment pathSegment: pathSegments)
+            System.out.println(pathSegment._vertex._strUniqueID.toString());
 
         System.out.println(gVisitor.getResult());
         if(gVisitor.getResult().equalsIgnoreCase("blah"))

@@ -204,10 +204,10 @@ public class Graph {
 				Vertex nextVertex = opposite(currVertex,e._strUniqueID.toString());
 				if (!visited.contains(nextVertex._strUniqueID.toString())) {
 					Vector<PathSegment> newVect = (Vector<PathSegment>) vctr.clone();
-					System.out.println(nextVertex._strUniqueID);
-					newVect.add(new PathSegment(nextVertex, e));
-					System.out.println(newVect.size());
-					pathDFSHelper(currVertex, goalVertex, newVect, visited);
+					newVect.add(new PathSegment(getVertexByUniqueID(currVertex), e));
+					if (nextVertex._strUniqueID.toString().equals("2"))
+						System.out.println("here");
+					return pathDFSHelper(nextVertex._strUniqueID.toString(), goalVertex, newVect, visited);
 				}
 			}
 			return null; 	
