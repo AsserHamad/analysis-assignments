@@ -213,9 +213,89 @@ public class Graph {
 			return null; 	
 
 		}
-		
-		
-	
+
+
+	// A class to represent a subset for union-find
+	class subset
+	{
+		int parent, rank;
+	};
+
+
+	int find(subset subsets[], int i)
+	{
+		// find root and make root as parent of i (path compression)
+		if (subsets[i].parent != i)
+			subsets[i].parent = find(subsets, subsets[i].parent);
+
+		return subsets[i].parent;
+	}
+
+
+	void Union(subset subsets[], int x, int y)
+	{
+		int xroot = find(subsets, x);
+		int yroot = find(subsets, y);
+
+		// Attach smaller rank tree under root of high rank tree
+		// (Union by Rank)
+		if (subsets[xroot].rank < subsets[yroot].rank)
+			subsets[xroot].parent = yroot;
+		else if (subsets[xroot].rank > subsets[yroot].rank)
+			subsets[yroot].parent = xroot;
+
+			// If ranks are same, then make one as root and increment
+			// its rank by one
+		else
+		{
+			subsets[yroot].parent = xroot;
+			subsets[xroot].rank++;
+		}
+	}
+
+	// A utility function used to print the solution
+	void printArr(int dist[], int V)
+	{
+		System.out.println("Vertex   Distance from Source");
+		for (int i=0; i<V; ++i)
+			System.out.println(i+"\t\t"+dist[i]);
+	}
+
+
+	// finds a minimum spanning tree using kruskal greedy algorithm
+// and returns the path to achieve that. Use Edge._nEdgeCost
+// attribute in finding the min span tree [30 pts]
+	public Vector<PathSegment> minSpanningTree()
+			throws GraphException{
+
+		Edge result[] = new Edge[vertices.size()];  // Tnis will store the resultant MST
+		int e = 0;  // An index variable, used for result[]
+		int i = 0;  // An index variable, used for sorted edges
+
+		Vector<Edge> newEdgeList = (Vector<Edge>) edges.clone();
+		Collections.sort(newEdgeList);
+
+		subset subsets[] = new subset[vertices.size()];
+		for(i=0; i<vertices.size(); i++)
+			subsets[i]=new subset();
+
+		for (int v = 0; v < vertices.size(); ++v)
+		{
+			subsets[v].parent = v;
+			subsets[v].rank = 0;
+		}
+
+//		loop over edges
+	for (Edge e1 : newEdgeList) {
+
+//		if pair of vertices in each edge don't share a disjoint set
+//		union their path segments sets and repeat
+	}
+	return null;
+	}
+
+
+
 	// finds the closest pair of vertices using divide and conquer algorithm. Use X and Y attributes in each vertex. [30 pts]
 //		public Vertex[] closestPair() throws GraphException {
 //
