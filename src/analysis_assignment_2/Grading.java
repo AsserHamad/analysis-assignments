@@ -21,7 +21,7 @@ public class Grading {
         g.insertEdge("3", "5", "34", "34", 34);
 
 
-        g.bfs("1",gVisitor );
+        System.out.println(g.pathDFS("1", "5"));
 
         System.out.println(gVisitor.getResult());
         if(gVisitor.getResult().equalsIgnoreCase("blah"))

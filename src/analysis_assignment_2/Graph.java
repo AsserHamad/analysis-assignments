@@ -166,12 +166,60 @@ public class Graph {
 		}
 	
 	// returns a path between start vertex and end vertex if exists using dfs. [18 pts]
-	//	public Vector<PathSegment> pathDFS( String strStartVertexUniqueID, String strEndVertexUniqueID) throws GraphException
-	
-	// finds the closest pair of vertices using divide and conquer algorithm. Use X and Y attributes in each vertex. [30 pts]
-		public Vertex[] closestPair() throws GraphException {
+		public Vector<PathSegment> pathDFS( String strStartVertexUniqueID, String strEndVertexUniqueID) throws GraphException {
+			return pathDFSHelper(strStartVertexUniqueID, strEndVertexUniqueID, new Vector<>(), new HashSet<>());
+//			Stack<String> toBeVisited = new Stack<String>();
+//			toBeVisited.add(strStartVertexUniqueID);
+//			HashSet<String> visited = new HashSet<>();
+//			Vector<PathSegment> output = new Vector<PathSegment>();
+//
+//			while (!toBeVisited.isEmpty()) {
+//				String nextVertex = toBeVisited.pop();
+//				if (visited.contains(nextVertex))
+//					continue;
+//				if(nextVertex.equals(strEndVertexUniqueID)) {
+//					return output;
+//				}
+//				visited.add(nextVertex);
+//
+//				Vector<Edge> incidentEdges = incidentEdges(nextVertex);
+//
+//				for (Edge e : incidentEdges) {
+//					Vertex v = opposite(nextVertex,e._strUniqueID.toString());
+//					if (!visited.contains(v._strUniqueID.toString()))
+//						toBeVisited.push(v._strUniqueID.toString());
+//				}
+//			}
+		}
+		
+		public Vector<PathSegment> pathDFSHelper(String currVertex, String goalVertex, Vector<PathSegment> vctr, HashSet<String> visited) throws GraphException {	
+			
+			if (currVertex.equals(goalVertex))
+				return vctr;
+			
+			
+			Vector<Edge> incidentEdges = incidentEdges(currVertex);
+			visited.add(currVertex);
+			for (Edge e : incidentEdges) {
+				Vertex nextVertex = opposite(currVertex,e._strUniqueID.toString());
+				if (!visited.contains(nextVertex._strUniqueID.toString())) {
+					Vector<PathSegment> newVect = (Vector<PathSegment>) vctr.clone();
+					System.out.println(nextVertex._strUniqueID);
+					newVect.add(new PathSegment(nextVertex, e));
+					System.out.println(newVect.size());
+					pathDFSHelper(currVertex, goalVertex, newVect, visited);
+				}
+			}
+			return null; 	
 
 		}
+		
+		
+	
+	// finds the closest pair of vertices using divide and conquer algorithm. Use X and Y attributes in each vertex. [30 pts]
+//		public Vertex[] closestPair() throws GraphException {
+//
+//		}
 	
 	/*			HELPER FUNCTIONS 			*/
 	public Vertex getVertexByUniqueID(String uniqueId) {
